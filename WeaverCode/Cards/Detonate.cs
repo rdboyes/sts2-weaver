@@ -19,8 +19,16 @@ public sealed class Detonate() : WeaverCard(2, CardType.Skill, CardRarity.Rare, 
 
         // Read the cost before playing: X-cost cards count your current energy, and plays may change the cost.
         int times = card.EnergyCost.GetAmountToSpend();
+        if (times <= 0)
+        {
+            await CardCmd.Exhaust(choiceContext, card);
+            return;
+        }
+
         for (int i = 0; i < times; i++)
         {
+            // The detonated card is used up: its last play sends it to the exhaust pile.
+            if (i == times - 1) card.ExhaustOnNextPlay = true;
             await CardCmd.AutoPlay(choiceContext, card, null);
         }
     }
