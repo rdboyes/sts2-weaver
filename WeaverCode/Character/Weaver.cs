@@ -55,6 +55,12 @@ public class Weaver : PlaceholderCharacterModel
             return icon;
         }
     }
+    // Placeholder art: a single image used for combat, the rest site and the merchant, in place of the Ironclad.
+    // BaseLib converts these plain Godot scenes into the game's node types.
+    public override string CustomVisualPath => "res://Weaver/scenes/weaver_combat.tscn";
+    public override string CustomRestSiteAnimPath => "res://Weaver/scenes/weaver_rest_site.tscn";
+    public override string CustomMerchantAnimPath => "res://Weaver/scenes/weaver_merchant.tscn";
+
     public override string CustomIconTexturePath => "character_icon_char_name.png".CharacterUiPath();
     public override string CustomCharacterSelectIconPath => "char_select_char_name.png".CharacterUiPath();
     public override string CustomCharacterSelectLockedIconPath => "char_select_char_name_locked.png".CharacterUiPath();

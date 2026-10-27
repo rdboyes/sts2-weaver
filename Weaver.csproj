@@ -1,5 +1,6 @@
 ﻿<Project Sdk="Godot.NET.Sdk/4.5.1" InitialTargets="CheckDependencyPaths">
     <Import Project=".\Sts2PathDiscovery.props"/>
+    <Import Project=".\build\AppendToPck.targets"/>
     <PropertyGroup>
         <TargetFramework>net9.0</TargetFramework>
         <ImplicitUsings>true</ImplicitUsings>
@@ -59,6 +60,7 @@
         <None Include="Weaver.json" />
         <None Include="project.godot"/>
         <None Include="Weaver/**" />
+        <None Include="WeaverScenes/**" />
     </ItemGroup>
 
     <ItemGroup>
