@@ -21,5 +21,17 @@
   "WEAVER-DOUBLE_WEAVE.description": "Gain {Slots:diff()} [gold]Alignment[/gold] {Slots:plural:slot|slots}.",
   "WEAVER-DETONATE.title": "Detonate",
   "WEAVER-DETONATE.description": "Choose a card in your [gold]Hand[/gold]. Play it X times, where X is its cost, then [gold]Exhaust[/gold] it.",
-  "WEAVER-DETONATE.selectionScreenPrompt": "Choose a card to [gold]Detonate[/gold]."
+  "WEAVER-DETONATE.selectionScreenPrompt": "Choose a card to [gold]Detonate[/gold].",
+  "WEAVER-OVERCOMMIT.title": "Overcommit",
+  "WEAVER-OVERCOMMIT.description": "Deal {Damage:diff()} damage.",
+  "WEAVER-LIKE_WATER.title": "Like Water",
+  "WEAVER-LIKE_WATER.description": "Deal {CalculatedDamage:diff()} damage.\nDeals {ExtraDamage:diff()} damage for each time you changed [gold]Alignment[/gold] this combat.",
+  "WEAVER-RESONANCE.title": "Resonance",
+  "WEAVER-RESONANCE.description": "Your [gold]Alignments[/gold] are {ResonancePower:diff()} stronger.",
+  "WEAVER-ADAPTIVE_WEAVE.title": "Adaptive Weave",
+  "WEAVER-ADAPTIVE_WEAVE.description": "Whenever you change your [gold]Alignment[/gold], gain {AdaptiveWeavePower:diff()} [gold]Block[/gold].",
+  "WEAVER-ILL_OMEN.title": "Ill Omen",
+  "WEAVER-ILL_OMEN.description": "Whenever you apply [gold]Doom[/gold] to an enemy, draw {IllOmenPower:diff()} {IllOmenPower:plural:card|cards}.",
+  "WEAVER-MELTDOWN.title": "Meltdown",
+  "WEAVER-MELTDOWN.description": "All of your cards gain [gold]Fuse[/gold] for the rest of combat."
 }

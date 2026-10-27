@@ -1,3 +1,5 @@
+using BaseLib.Utils;
+using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
@@ -5,12 +7,40 @@ using MegaCrit.Sts2.Core.Models;
 
 namespace Weaver.WeaverCode.Alignment;
 
+/// <summary>A power that reacts whenever its owner changes to an alignment they didn't already have.</summary>
+public interface IAfterAlignmentChanged
+{
+    Task AfterAlignmentChanged(PlayerChoiceContext choiceContext, AlignmentPower newAlignment);
+}
+
 public static class AlignCmd
 {
     public const int DefaultSlots = 1;
 
+    private sealed class ChangeCount
+    {
+        public ICombatState? Combat;
+        public int Count;
+    }
+
+    private static readonly NotNullSpireField<Creature, ChangeCount> Changes = new(() => new ChangeCount());
+
     public static int Slots(Creature creature) =>
         DefaultSlots + (creature.Powers.OfType<AlignmentSlotsPower>().FirstOrDefault()?.Amount ?? 0);
+
+    /// <summary>How strong each alignment is: 1, plus any <see cref="ResonancePower"/>.</summary>
+    public static int Strength(Creature creature) =>
+        1 + (creature.Powers.OfType<ResonancePower>().FirstOrDefault()?.Amount ?? 0);
+
+    /// <summary>
+    /// How many times the creature has changed to an alignment it didn't already have this combat, including
+    /// aligning at the start of combat.
+    /// </summary>
+    public static int ChangesThisCombat(Creature creature)
+    {
+        var changes = Changes[creature];
+        return changes.Combat == creature.CombatState ? changes.Count : 0;
+    }
 
     /// <summary>
     /// Align the creature with a new alignment. If every slot is full, the oldest alignment is replaced
@@ -23,6 +53,7 @@ public static class AlignCmd
 
         // Alignments don't stack; re-aligning to one you already have just refreshes its position.
         var existing = current.OfType<T>().FirstOrDefault();
+        bool isChange = existing == null;
         if (existing != null)
         {
             await PowerCmd.Remove(existing);
@@ -36,7 +67,21 @@ public static class AlignCmd
             await PowerCmd.Remove(old);
         }
 
-        await PowerCmd.Apply<T>(choiceContext, creature, 1m, creature, cardSource);
+        var alignment = await PowerCmd.Apply<T>(choiceContext, creature, Strength(creature), creature, cardSource);
+        if (!isChange || alignment == null) return;
+
+        var changes = Changes[creature];
+        if (changes.Combat != creature.CombatState)
+        {
+            changes.Combat = creature.CombatState;
+            changes.Count = 0;
+        }
+        changes.Count++;
+
+        foreach (var listener in creature.Powers.OfType<IAfterAlignmentChanged>().ToList())
+        {
+            await listener.AfterAlignmentChanged(choiceContext, alignment);
+        }
     }
 
     /// <summary>Extra slots last for the rest of combat.</summary>
@@ -44,5 +89,15 @@ public static class AlignCmd
         CardModel? cardSource)
     {
         await PowerCmd.Apply<AlignmentSlotsPower>(choiceContext, creature, amount, creature, cardSource);
+    }
+
+    /// <summary>Bring every current alignment up to date with <see cref="Strength"/>.</summary>
+    public static void RefreshStrength(Creature creature)
+    {
+        int strength = Strength(creature);
+        foreach (var alignment in AlignmentPower.On(creature))
+        {
+            if (alignment.Amount != strength) alignment.SetAmount(strength);
+        }
     }
 }

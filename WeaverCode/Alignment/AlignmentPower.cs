@@ -14,7 +14,8 @@ namespace Weaver.WeaverCode.Alignment;
 /// the matching number (e.g. Lightning and damage), the bonus merges into it and shows on the card; otherwise the
 /// alignment's rider is added as an extra effect. Fused effects keep the enhancement they were played with
 /// (see <see cref="AddFusedBonus"/>), so the live alignment ignores hidden fused copies.
-/// Only <see cref="AlignCmd"/> should apply these, so the slot limit is respected.
+/// The power's Amount is the alignment's strength (1, plus <see cref="ResonancePower"/>).
+/// Only <see cref="AlignCmd"/> should apply these, so the slot limit and strength stay correct.
 /// </summary>
 public abstract class AlignmentPower : WeaverPower
 {
@@ -41,7 +42,15 @@ public abstract class AlignmentPower : WeaverPower
     public virtual bool HasRider => true;
 
     /// <summary>Card text for the rider, e.g. "Gain 1 Block."</summary>
-    public string RiderText => new LocString("powers", Id.Entry + ".rider").GetFormattedText();
+    public string RiderText
+    {
+        get
+        {
+            var loc = new LocString("powers", Id.Entry + ".rider");
+            loc.Add("Amount", Amount);
+            return loc.GetFormattedText();
+        }
+    }
 
     /// <summary>
     /// The extra effect added to cards this alignment doesn't merge into.
