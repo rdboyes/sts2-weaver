@@ -5,14 +5,19 @@ using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.ValueProps;
 using Weaver.WeaverCode.Alignment;
+using Weaver.WeaverCode.Fuse;
 
 namespace Weaver.WeaverCode.Cards;
 
-public sealed class Shatterweave() : WeaverCard(2, CardType.Skill, CardRarity.Rare, TargetType.Self)
+public sealed class Shatterweave() : WeaverCard(2, CardType.Skill, CardRarity.Rare, TargetType.Self), IFusable
 {
     protected override IEnumerable<DynamicVar> CanonicalVars => [new BlockVar(12m, ValueProp.Move)];
 
     protected override IEnumerable<IHoverTip> ExtraHoverTips => [HoverTipFactory.FromPower<GlassAlignment>()];
+
+    public IEnumerable<(FuseStat Stat, DynamicVar Var)> FuseStats => [(FuseStat.Block, DynamicVars.Block)];
+
+    public IEnumerable<FusedAlign> FuseAligns => [FusedAlign.Of<GlassAlignment>()];
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {

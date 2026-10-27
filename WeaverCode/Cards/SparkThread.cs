@@ -5,14 +5,19 @@ using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.ValueProps;
 using Weaver.WeaverCode.Alignment;
+using Weaver.WeaverCode.Fuse;
 
 namespace Weaver.WeaverCode.Cards;
 
-public sealed class SparkThread() : WeaverCard(1, CardType.Attack, CardRarity.Common, TargetType.AnyEnemy)
+public sealed class SparkThread() : WeaverCard(1, CardType.Attack, CardRarity.Common, TargetType.AnyEnemy), IFusable
 {
     protected override IEnumerable<DynamicVar> CanonicalVars => [new DamageVar(7m, ValueProp.Move)];
 
     protected override IEnumerable<IHoverTip> ExtraHoverTips => [HoverTipFactory.FromPower<LightningAlignment>()];
+
+    public IEnumerable<(FuseStat Stat, DynamicVar Var)> FuseStats => [(FuseStat.Damage, DynamicVars.Damage)];
+
+    public IEnumerable<FusedAlign> FuseAligns => [FusedAlign.Of<LightningAlignment>()];
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {

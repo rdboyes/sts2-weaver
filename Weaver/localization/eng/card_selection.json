@@ -1,4 +1,12 @@
 {
   "WEAVER-FUSE_PROMPT": "Choose a card to [gold]Fuse[/gold] into.",
-  "WEAVER-FUSED_EFFECT": "[purple]{Title}:[/purple] {Text}"
+  "WEAVER-FUSED_HEADER": "[purple]Fused:[/purple]",
+  "WEAVER-FUSED_DAMAGE": "Deal [blue]{Amount}[/blue] damage.",
+  "WEAVER-FUSED_DAMAGEALL": "Deal [blue]{Amount}[/blue] damage to ALL enemies.",
+  "WEAVER-FUSED_BLOCK": "Gain [blue]{Amount}[/blue] [gold]Block[/gold].",
+  "WEAVER-FUSED_DOOM": "Apply [blue]{Amount}[/blue] [gold]Doom[/gold].",
+  "WEAVER-FUSED_DRAW": "Draw [blue]{Amount}[/blue] {Amount:plural:card|cards}.",
+  "WEAVER-FUSED_ALIGNMENTSLOTS": "Gain [blue]{Amount}[/blue] [gold]Alignment[/gold] {Amount:plural:slot|slots}.",
+  "WEAVER-FUSED_ALIGN": "[gold]Align[/gold] [gold]{Alignment}[/gold].",
+  "WEAVER-FUSED_PLAY": "Play [gold]{Title}[/gold]."
 }

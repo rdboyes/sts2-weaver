@@ -7,11 +7,13 @@ using Weaver.WeaverCode.Fuse;
 
 namespace Weaver.WeaverCode.Cards;
 
-public sealed class Needle() : WeaverCard(1, CardType.Attack, CardRarity.Common, TargetType.AnyEnemy)
+public sealed class Needle() : WeaverCard(1, CardType.Attack, CardRarity.Common, TargetType.AnyEnemy), IFusable
 {
     public override IEnumerable<CardKeyword> CanonicalKeywords => [WeaverKeywords.Fuse];
 
     protected override IEnumerable<DynamicVar> CanonicalVars => [new DamageVar(8m, ValueProp.Move)];
+
+    public IEnumerable<(FuseStat Stat, DynamicVar Var)> FuseStats => [(FuseStat.Damage, DynamicVars.Damage)];
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {

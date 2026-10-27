@@ -8,7 +8,10 @@ using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Localization;
+using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models;
+using MegaCrit.Sts2.Core.Models.Powers;
+using MegaCrit.Sts2.Core.ValueProps;
 using Weaver.WeaverCode.Alignment;
 
 namespace Weaver.WeaverCode.Fuse;
@@ -16,24 +19,22 @@ namespace Weaver.WeaverCode.Fuse;
 public static class FuseCmd
 {
     /// <summary>
-    /// Fused copies of cards whose effects ride along on a card. These live on the combat copy of the card, so fusing
-    /// never touches the deck and is gone when combat ends.
+    /// What has been fused onto a card beyond its own numbers. Lives on the combat copy of the card, so fusing never
+    /// touches the deck and is gone when combat ends.
     /// </summary>
-    private static readonly NotNullSpireField<CardModel, List<CardModel>> Payloads =
-        new NotNullSpireField<CardModel, List<CardModel>>(() => [])
-            .CopyOnClone((_, dst, payloads) => Payloads![dst] = [..payloads]);
-
-    /// <summary>
-    /// Alignment riders a fused copy was played with. Merged bonuses (e.g. Lightning's +1 damage) are baked into the
-    /// copy's own numbers instead.
-    /// </summary>
-    private static readonly NotNullSpireField<CardModel, List<AlignmentPower>> Riders = new(() => []);
+    private static readonly NotNullSpireField<CardModel, FusedEffects> Fused =
+        new NotNullSpireField<CardModel, FusedEffects>(() => new FusedEffects())
+            .CopyOnClone((_, dst, fused) => Fused![dst] = fused.Copy());
 
     private static readonly SpireField<CardModel, bool> PayloadFlag = new(() => false);
 
     private static readonly Func<CardModel, PlayerChoiceContext, CardPlay, Task> InvokeOnPlay =
         AccessTools.MethodDelegate<Func<CardModel, PlayerChoiceContext, CardPlay, Task>>(
             AccessTools.Method(typeof(CardModel), "OnPlay"), virtualCall: true);
+
+    /// <summary>Order effects are resolved and listed in.</summary>
+    private static readonly FuseStat[] StatOrder =
+        [FuseStat.Damage, FuseStat.DamageAll, FuseStat.Block, FuseStat.Doom, FuseStat.Draw, FuseStat.AlignmentSlots];
 
     /// <summary>Called once from the mod initializer.</summary>
     public static void Initialize()
@@ -43,36 +44,75 @@ public static class FuseCmd
 
     public static bool HasFuse(CardModel card) => card.Keywords.Contains(WeaverKeywords.Fuse);
 
+    /// <summary>Hidden copies of non-<see cref="IFusable"/> cards, played as part of a fused card.</summary>
     public static bool IsPayload(CardModel card) => PayloadFlag[card];
 
-    /// <summary>Resolve every effect fused onto the played card, using its target where possible.</summary>
-    public static async Task PlayPayloads(PlayerChoiceContext choiceContext, CardPlay hostPlay)
+    /// <summary>Resolve everything fused onto the played card, after its own effects.</summary>
+    public static async Task PlayFused(PlayerChoiceContext choiceContext, CardPlay hostPlay)
     {
-        var owner = hostPlay.Card.Owner.Creature;
-        foreach (var payload in Payloads[hostPlay.Card].ToList())
+        var host = hostPlay.Card;
+        var fused = Fused[host];
+        if (fused.IsEmpty) return;
+
+        var owner = host.Owner.Creature;
+        Creature? target = null;
+        Creature? Target() => target is { IsHittable: true } ? target : target = EnemyTarget(owner, hostPlay.Target);
+
+        foreach (var stat in StatOrder)
+        {
+            decimal amount = fused[stat];
+            if (amount <= 0) continue;
+            if (owner.IsDead) return;
+
+            switch (stat)
+            {
+                case FuseStat.Damage when Target() is { } enemy:
+                    VfxCmd.PlayOnCreature(enemy, "vfx/vfx_attack_slash");
+                    await CreatureCmd.Damage(choiceContext, enemy, amount, ValueProp.Move, owner);
+                    break;
+                case FuseStat.DamageAll:
+                    var enemies = owner.CombatState?.GetOpponentsOf(owner).Where(e => e.IsHittable).ToList();
+                    if (enemies is { Count: > 0 })
+                        await CreatureCmd.Damage(choiceContext, enemies, amount, ValueProp.Unpowered, owner);
+                    break;
+                case FuseStat.Block:
+                    await CreatureCmd.GainBlock(owner, amount, ValueProp.Move, null);
+                    break;
+                case FuseStat.Doom when Target() is { } enemy:
+                    await PowerCmd.Apply<DoomPower>(choiceContext, enemy, amount, owner, null);
+                    break;
+                case FuseStat.Draw:
+                    await CardPileCmd.Draw(choiceContext, amount, host.Owner);
+                    break;
+                case FuseStat.AlignmentSlots:
+                    await AlignCmd.AddSlots(choiceContext, owner, (int)amount, host);
+                    break;
+            }
+        }
+
+        foreach (var align in fused.Aligns.ToList())
+        {
+            if (owner.IsDead) return;
+            await align.Apply(choiceContext, owner, host);
+        }
+
+        foreach (var payload in fused.Others.ToList())
         {
             if (owner.IsDead) return;
 
-            var target = TargetFor(payload, hostPlay);
-            if (payload.TargetType is TargetType.AnyEnemy && target == null) continue;
+            var payloadTarget = payload.TargetType is TargetType.AnyEnemy ? Target() : hostPlay.Target;
+            if (payload.TargetType is TargetType.AnyEnemy && payloadTarget == null) continue;
 
-            var payloadPlay = new CardPlay
+            await InvokeOnPlay(payload, choiceContext, new CardPlay
             {
                 Card = payload,
-                Target = target,
+                Target = payloadTarget,
                 ResultPile = hostPlay.ResultPile,
                 Resources = hostPlay.Resources,
                 IsAutoPlay = true,
                 PlayIndex = 0,
                 PlayCount = 1
-            };
-            await InvokeOnPlay(payload, choiceContext, payloadPlay);
-
-            foreach (var alignment in Riders[payload])
-            {
-                if (owner.IsDead) return;
-                await alignment.Rider(choiceContext, owner, payload, target);
-            }
+            });
         }
     }
 
@@ -92,9 +132,7 @@ public static class FuseCmd
 
     public static void FuseOnto(CardModel source, CardModel host)
     {
-        var hostPayloads = Payloads[host];
-        hostPayloads.Add(SnapshotPayload(source));
-        hostPayloads.AddRange(Payloads[source]);
+        Absorb(host, EffectsOf(source));
 
         if (!source.EnergyCost.CostsX)
         {
@@ -106,62 +144,107 @@ public static class FuseCmd
         host.AddKeyword(WeaverKeywords.Fuse);
     }
 
-    /// <summary>A copy of the card's own effects, locked to the alignment it was played with.</summary>
-    private static CardModel SnapshotPayload(CardModel source)
+    /// <summary>
+    /// Everything <paramref name="source"/> does when played right now: its own effects, the bonuses from the
+    /// alignments it is played under, and whatever was already fused onto it.
+    /// </summary>
+    private static FusedEffects EffectsOf(CardModel source)
     {
-        var payload = source.CreateClone();
-        PayloadFlag[payload] = true;
-        Payloads[payload] = [];
-        payload.RemoveKeyword(WeaverKeywords.Fuse);
-
-        var riders = Riders[payload];
-        riders.Clear();
-        foreach (var alignment in AlignmentPower.On(source.Owner.Creature))
+        var effects = new FusedEffects();
+        if (source is IFusable fusable)
         {
-            if (alignment.MergesInto(payload)) alignment.BakeInto(payload);
-            else if (alignment.HasRider) riders.Add(alignment);
+            foreach (var (stat, dynamicVar) in fusable.FuseStats) effects.Add(stat, dynamicVar.BaseValue);
+            foreach (var align in fusable.FuseAligns) effects.AddAlign(align);
         }
-        return payload;
+        else
+        {
+            var payload = source.CreateClone();
+            PayloadFlag[payload] = true;
+            Fused[payload] = new FusedEffects();
+            payload.RemoveKeyword(WeaverKeywords.Fuse);
+            effects.Others.Add(payload);
+        }
+
+        foreach (var alignment in AlignmentPower.On(source.Owner.Creature)) alignment.AddFusedBonus(effects);
+
+        effects.AddAll(Fused[source]);
+        return effects;
     }
 
-    private static Creature? TargetFor(CardModel payload, CardPlay hostPlay)
+    /// <summary>Fold effects into the host's own numbers where it has them, and keep the rest alongside.</summary>
+    private static void Absorb(CardModel host, FusedEffects effects)
     {
-        if (payload.TargetType is not TargetType.AnyEnemy) return hostPlay.Target;
+        var hostVars = new Dictionary<FuseStat, DynamicVar>();
+        var hostAligns = new HashSet<Type>();
+        if (host is IFusable fusable)
+        {
+            foreach (var (stat, dynamicVar) in fusable.FuseStats) hostVars.TryAdd(stat, dynamicVar);
+            foreach (var align in fusable.FuseAligns) hostAligns.Add(align.Alignment);
+        }
 
-        var owner = payload.Owner.Creature;
-        if (hostPlay.Target is { IsHittable: true } t && t.Side != owner.Side) return t;
+        var fused = Fused[host];
+        foreach (var (stat, amount) in effects.Stats)
+        {
+            if (hostVars.TryGetValue(stat, out var dynamicVar)) dynamicVar.BaseValue += amount;
+            else fused.Add(stat, amount);
+        }
+
+        foreach (var align in effects.Aligns.Where(a => !hostAligns.Contains(a.Alignment))) fused.AddAlign(align);
+        fused.Others.AddRange(effects.Others);
+    }
+
+    private static Creature? EnemyTarget(Creature owner, Creature? preferred)
+    {
+        if (preferred is { IsHittable: true } && preferred.Side != owner.Side) return preferred;
 
         var enemies = owner.CombatState?.GetOpponentsOf(owner).Where(e => e.IsHittable).ToList();
         if (enemies == null || enemies.Count == 0) return null;
-        return payload.Owner.RunState.Rng.CombatTargets.NextItem(enemies);
+        return owner.Player!.RunState.Rng.CombatTargets.NextItem(enemies);
     }
 
     /// <summary>
-    /// Adds alignment riders and fused effects to the card's main text, ahead of keyword lines like "Fuse.".
+    /// Adds alignment riders and a single combined "Fused:" line to the card's main text, ahead of keyword lines
+    /// like "Fuse.".
     /// </summary>
     private static void AddEnhancementText(CardModel card, Creature? target, ref string description)
     {
-        if (!card.IsMutable) return;
+        if (!card.IsMutable || IsPayload(card)) return;
 
         var lines = new List<string> { description };
 
-        if (IsPayload(card))
-        {
-            lines.AddRange(Riders[card].Select(a => a.RiderText));
-        }
-        else if (CombatManager.Instance.IsInProgress && card.Pile is { IsCombatPile: true })
+        if (CombatManager.Instance.IsInProgress && card.Pile is { IsCombatPile: true })
         {
             lines.AddRange(AlignmentPower.On(card.Owner.Creature)
                 .Where(a => a.HasRider && !a.MergesInto(card))
                 .Select(a => a.RiderText));
         }
 
-        foreach (var payload in Payloads[card])
+        var fused = Fused[card];
+        if (!fused.IsEmpty)
         {
-            var loc = new LocString("card_selection", "WEAVER-FUSED_EFFECT");
-            loc.Add("Title", payload.Title);
-            loc.Add("Text", payload.GetDescriptionForPile(PileType.None).Replace('\n', ' '));
-            lines.Add(loc.GetFormattedText());
+            var parts = new List<string>();
+            foreach (var stat in StatOrder)
+            {
+                if (fused[stat] <= 0) continue;
+                var loc = new LocString("card_selection", $"WEAVER-FUSED_{stat.ToString().ToUpperInvariant()}");
+                loc.Add("Amount", fused[stat]);
+                parts.Add(loc.GetFormattedText());
+            }
+            foreach (var align in fused.Aligns)
+            {
+                var loc = new LocString("card_selection", "WEAVER-FUSED_ALIGN");
+                loc.Add("Alignment", align.ShortName);
+                parts.Add(loc.GetFormattedText());
+            }
+            foreach (var payload in fused.Others)
+            {
+                var loc = new LocString("card_selection", "WEAVER-FUSED_PLAY");
+                loc.Add("Title", payload.Title);
+                parts.Add(loc.GetFormattedText());
+            }
+
+            var header = new LocString("card_selection", "WEAVER-FUSED_HEADER").GetFormattedText();
+            lines.Add(header + " " + string.Join(" ", parts));
         }
 
         description = string.Join('\n', lines.Where(l => !string.IsNullOrEmpty(l)));

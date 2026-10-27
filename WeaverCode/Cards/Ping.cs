@@ -7,11 +7,13 @@ using Weaver.WeaverCode.Fuse;
 
 namespace Weaver.WeaverCode.Cards;
 
-public sealed class Ping() : WeaverCard(0, CardType.Attack, CardRarity.Basic, TargetType.AnyEnemy)
+public sealed class Ping() : WeaverCard(0, CardType.Attack, CardRarity.Basic, TargetType.AnyEnemy), IFusable
 {
     public override IEnumerable<CardKeyword> CanonicalKeywords => [WeaverKeywords.Fuse];
 
     protected override IEnumerable<DynamicVar> CanonicalVars => [new DamageVar(3m, ValueProp.Move)];
+
+    public IEnumerable<(FuseStat Stat, DynamicVar Var)> FuseStats => [(FuseStat.Damage, DynamicVars.Damage)];
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {

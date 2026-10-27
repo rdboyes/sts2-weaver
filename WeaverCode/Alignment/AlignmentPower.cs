@@ -12,8 +12,8 @@ namespace Weaver.WeaverCode.Alignment;
 /// <summary>
 /// An Alignment sits on the player like a power and enhances every card its owner plays. If the card already has
 /// the matching number (e.g. Lightning and damage), the bonus merges into it and shows on the card; otherwise the
-/// alignment's rider is added as an extra effect. Fused copies of cards keep the enhancement they were played with
-/// (see <see cref="FuseCmd"/>), so the live alignment ignores them.
+/// alignment's rider is added as an extra effect. Fused effects keep the enhancement they were played with
+/// (see <see cref="AddFusedBonus"/>), so the live alignment ignores hidden fused copies.
 /// Only <see cref="AlignCmd"/> should apply these, so the slot limit is respected.
 /// </summary>
 public abstract class AlignmentPower : WeaverPower
@@ -32,8 +32,11 @@ public abstract class AlignmentPower : WeaverPower
     /// <summary>Whether the bonus folds into a number the card already has, instead of adding a rider.</summary>
     public virtual bool MergesInto(CardModel card) => false;
 
-    /// <summary>Permanently add the merged bonus to a fused copy of a card.</summary>
-    public virtual void BakeInto(CardModel card) { }
+    /// <summary>
+    /// What this alignment adds to a card that is fused while aligned. Whether the bonus merged into the card or was
+    /// a rider, it comes out as the same stat (e.g. Lightning is always +1 damage).
+    /// </summary>
+    public virtual void AddFusedBonus(FusedEffects effects) { }
 
     public virtual bool HasRider => true;
 
@@ -41,8 +44,7 @@ public abstract class AlignmentPower : WeaverPower
     public string RiderText => new LocString("powers", Id.Entry + ".rider").GetFormattedText();
 
     /// <summary>
-    /// The extra effect added to cards this alignment doesn't merge into. Only uses its parameters, so it also works
-    /// on alignments that have since been replaced (fused copies keep a reference to them).
+    /// The extra effect added to cards this alignment doesn't merge into.
     /// </summary>
     public virtual Task Rider(PlayerChoiceContext choiceContext, Creature owner, CardModel card, Creature? target) =>
         Task.CompletedTask;

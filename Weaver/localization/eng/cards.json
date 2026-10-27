@@ -18,7 +18,7 @@
   "WEAVER-NEEDLE.title": "Needle",
   "WEAVER-NEEDLE.description": "Deal {Damage:diff()} damage.",
   "WEAVER-DOUBLE_WEAVE.title": "Double Weave",
-  "WEAVER-DOUBLE_WEAVE.description": "Gain [blue]1[/blue] [gold]Alignment[/gold] slot.",
+  "WEAVER-DOUBLE_WEAVE.description": "Gain {Slots:diff()} [gold]Alignment[/gold] {Slots:plural:slot|slots}.",
   "WEAVER-DETONATE.title": "Detonate",
   "WEAVER-DETONATE.description": "Choose a card in your [gold]Hand[/gold]. Play it X times, where X is its cost.",
   "WEAVER-DETONATE.selectionScreenPrompt": "Choose a card to [gold]Detonate[/gold]."

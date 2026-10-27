@@ -6,6 +6,7 @@ using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Models.Powers;
 using MegaCrit.Sts2.Core.ValueProps;
+using Weaver.WeaverCode.Fuse;
 
 namespace Weaver.WeaverCode.Alignment;
 
@@ -16,7 +17,7 @@ public sealed class LightningAlignment : AlignmentPower
 
     public override bool MergesInto(CardModel card) => card.DynamicVars.ContainsKey("Damage");
 
-    public override void BakeInto(CardModel card) => card.DynamicVars.Damage.BaseValue += 1;
+    public override void AddFusedBonus(FusedEffects effects) => effects.Add(FuseStat.Damage, 1m);
 
     public override decimal ModifyDamageAdditive(Creature? target, decimal amount, ValueProp props, Creature? dealer,
         CardModel? cardSource)
@@ -41,7 +42,7 @@ public sealed class FrostAlignment : AlignmentPower
 
     public override bool MergesInto(CardModel card) => card.DynamicVars.ContainsKey("Block");
 
-    public override void BakeInto(CardModel card) => card.DynamicVars.Block.BaseValue += 1;
+    public override void AddFusedBonus(FusedEffects effects) => effects.Add(FuseStat.Block, 1m);
 
     public override decimal ModifyBlockAdditive(Creature target, decimal block, ValueProp props, CardModel? cardSource,
         CardPlay? cardPlay)
@@ -81,6 +82,8 @@ public sealed class DarkAlignment : AlignmentPower
 
     protected override IEnumerable<IHoverTip> ExtraHoverTips => [HoverTipFactory.FromPower<DoomPower>()];
 
+    public override void AddFusedBonus(FusedEffects effects) => effects.Add(FuseStat.Doom, 1m);
+
     public override async Task Rider(PlayerChoiceContext choiceContext, Creature owner, CardModel card, Creature? target)
     {
         var enemy = EnemyTarget(owner, target);
@@ -93,6 +96,8 @@ public sealed class DarkAlignment : AlignmentPower
 public sealed class GlassAlignment : AlignmentPower
 {
     protected override string OrbName => "glass";
+
+    public override void AddFusedBonus(FusedEffects effects) => effects.Add(FuseStat.DamageAll, 1m);
 
     public override async Task Rider(PlayerChoiceContext choiceContext, Creature owner, CardModel card, Creature? target)
     {

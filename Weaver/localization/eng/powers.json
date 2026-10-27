@@ -20,5 +20,10 @@
   "WEAVER-GLASS_ALIGNMENT.rider": "Deal [blue]1[/blue] damage to ALL enemies.",
   "WEAVER-ALIGNMENT_SLOTS_POWER.title": "Alignment Slots",
   "WEAVER-ALIGNMENT_SLOTS_POWER.description": "You can hold more [gold]Alignments[/gold] at once.",
-  "WEAVER-ALIGNMENT_SLOTS_POWER.smartDescription": "You can hold [blue]{Amount}[/blue] more {Amount:plural:[gold]Alignment[/gold]|[gold]Alignments[/gold]} at once."
+  "WEAVER-ALIGNMENT_SLOTS_POWER.smartDescription": "You can hold [blue]{Amount}[/blue] more {Amount:plural:[gold]Alignment[/gold]|[gold]Alignments[/gold]} at once.",
+  "WEAVER-LIGHTNING_ALIGNMENT.short": "Lightning",
+  "WEAVER-FROST_ALIGNMENT.short": "Frost",
+  "WEAVER-PLASMA_ALIGNMENT.short": "Plasma",
+  "WEAVER-DARK_ALIGNMENT.short": "Dark",
+  "WEAVER-GLASS_ALIGNMENT.short": "Glass"
 }
