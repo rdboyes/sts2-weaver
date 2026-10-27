@@ -34,7 +34,7 @@ public static class FuseCmd
 
     /// <summary>Order effects are resolved and listed in.</summary>
     private static readonly FuseStat[] StatOrder =
-        [FuseStat.Damage, FuseStat.DamageAll, FuseStat.Block, FuseStat.Doom, FuseStat.Draw, FuseStat.AlignmentSlots];
+        [FuseStat.Damage, FuseStat.DamageAll, FuseStat.Block, FuseStat.Plating, FuseStat.Doom, FuseStat.Draw, FuseStat.AlignmentSlots];
 
     /// <summary>Called once from the mod initializer.</summary>
     public static void Initialize()
@@ -77,6 +77,9 @@ public static class FuseCmd
                     break;
                 case FuseStat.Block:
                     await CreatureCmd.GainBlock(owner, amount, ValueProp.Move, null);
+                    break;
+                case FuseStat.Plating:
+                    await PowerCmd.Apply<PlatingPower>(choiceContext, owner, amount, owner, null);
                     break;
                 case FuseStat.Doom when Target() is { } enemy:
                     await PowerCmd.Apply<DoomPower>(choiceContext, enemy, amount, owner, null);

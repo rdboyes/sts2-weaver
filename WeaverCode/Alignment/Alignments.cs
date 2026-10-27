@@ -36,25 +36,18 @@ public sealed class LightningAlignment : AlignmentPower
     }
 }
 
-/// <summary>Cards gain more Block. Cards without Block instead also grant Block.</summary>
+/// <summary>Cards also grant Plating.</summary>
 public sealed class FrostAlignment : AlignmentPower
 {
     protected override string OrbName => "frost";
 
-    public override bool MergesInto(CardModel card) => card.DynamicVars.ContainsKey("Block");
+    protected override IEnumerable<IHoverTip> ExtraHoverTips => [HoverTipFactory.FromPower<PlatingPower>()];
 
-    public override void AddFusedBonus(FusedEffects effects) => effects.Add(FuseStat.Block, Amount);
-
-    public override decimal ModifyBlockAdditive(Creature target, decimal block, ValueProp props, CardModel? cardSource,
-        CardPlay? cardPlay)
-    {
-        if (!IsAlignedCard(cardSource) || !MergesInto(cardSource!) || !props.IsPoweredCardOrMonsterMoveBlock()) return 0m;
-        return Amount;
-    }
+    public override void AddFusedBonus(FusedEffects effects) => effects.Add(FuseStat.Plating, Amount);
 
     public override async Task Rider(PlayerChoiceContext choiceContext, Creature owner, CardModel card, Creature? target)
     {
-        await CreatureCmd.GainBlock(owner, Amount, ValueProp.Unpowered, null);
+        await PowerCmd.Apply<PlatingPower>(choiceContext, owner, Amount, owner, null);
     }
 }
 

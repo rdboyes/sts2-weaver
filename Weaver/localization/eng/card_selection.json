@@ -4,6 +4,7 @@
   "WEAVER-FUSED_DAMAGE": "Deal [blue]{Amount}[/blue] damage.",
   "WEAVER-FUSED_DAMAGEALL": "Deal [blue]{Amount}[/blue] damage to ALL enemies.",
   "WEAVER-FUSED_BLOCK": "Gain [blue]{Amount}[/blue] [gold]Block[/gold].",
+  "WEAVER-FUSED_PLATING": "Gain [blue]{Amount}[/blue] [gold]Plating[/gold].",
   "WEAVER-FUSED_DOOM": "Apply [blue]{Amount}[/blue] [gold]Doom[/gold].",
   "WEAVER-FUSED_DRAW": "Draw [blue]{Amount}[/blue] {Amount:plural:card|cards}.",
   "WEAVER-FUSED_ALIGNMENTSLOTS": "Gain [blue]{Amount}[/blue] [gold]Alignment[/gold] {Amount:plural:slot|slots}.",

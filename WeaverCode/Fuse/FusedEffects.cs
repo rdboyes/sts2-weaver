@@ -15,6 +15,7 @@ public enum FuseStat
     /// <summary>Damage to ALL enemies.</summary>
     DamageAll,
     Block,
+    Plating,
     /// <summary>Doom applied to the card's target, or a random enemy.</summary>
     Doom,
     Draw,
