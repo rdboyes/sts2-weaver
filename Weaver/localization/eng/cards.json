@@ -33,5 +33,8 @@
   "WEAVER-ILL_OMEN.title": "Ill Omen",
   "WEAVER-ILL_OMEN.description": "Whenever you apply [gold]Doom[/gold] to an enemy, draw {IllOmenPower:diff()} {IllOmenPower:plural:card|cards}.",
   "WEAVER-MELTDOWN.title": "Meltdown",
-  "WEAVER-MELTDOWN.description": "All of your cards gain [gold]Fuse[/gold] for the rest of combat."
+  "WEAVER-MELTDOWN.description": "All of your cards gain [gold]Fuse[/gold] for the rest of combat.",
+  "WEAVER-TEAR_AWAY.title": "Tear Away",
+  "WEAVER-TEAR_AWAY.description": "[gold]Exhaust[/gold] a card in your [gold]Hand[/gold]. Draw cards equal to its cost.",
+  "WEAVER-TEAR_AWAY.selectionScreenPrompt": "Choose a card to [gold]Exhaust[/gold]."
 }

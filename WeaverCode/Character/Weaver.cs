@@ -30,7 +30,7 @@ public class Weaver : PlaceholderCharacterModel
         ModelDb.Card<DefendWeaver>(),
         ModelDb.Card<DefendWeaver>(),
         ModelDb.Card<Ping>(),
-        ModelDb.Card<Carapace>()
+        ModelDb.Card<TearAway>()
     ];
 
     public override IReadOnlyList<RelicModel> StartingRelics =>

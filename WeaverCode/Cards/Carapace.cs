@@ -9,7 +9,7 @@ using Weaver.WeaverCode.Fuse;
 
 namespace Weaver.WeaverCode.Cards;
 
-public sealed class Carapace() : WeaverCard(2, CardType.Skill, CardRarity.Basic, TargetType.Self), IFusable
+public sealed class Carapace() : WeaverCard(2, CardType.Skill, CardRarity.Common, TargetType.Self), IFusable
 {
     protected override IEnumerable<DynamicVar> CanonicalVars => [new BlockVar(8m, ValueProp.Move)];
 
