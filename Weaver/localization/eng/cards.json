@@ -1,0 +1,22 @@
+{
+  "WEAVER-STRIKE_WEAVER.title": "Strike",
+  "WEAVER-STRIKE_WEAVER.description": "Deal {Damage:diff()} damage.",
+  "WEAVER-DEFEND_WEAVER.title": "Defend",
+  "WEAVER-DEFEND_WEAVER.description": "Gain {Block:diff()} [gold]Block[/gold].",
+  "WEAVER-PING.title": "Ping",
+  "WEAVER-PING.description": "Deal {Damage:diff()} damage.",
+  "WEAVER-CARAPACE.title": "Carapace",
+  "WEAVER-CARAPACE.description": "Gain {Block:diff()} [gold]Block[/gold].\n[gold]Align[/gold] [gold]Frost[/gold].",
+  "WEAVER-SPARK_THREAD.title": "Spark Thread",
+  "WEAVER-SPARK_THREAD.description": "Deal {Damage:diff()} damage.\n[gold]Align[/gold] [gold]Lightning[/gold].",
+  "WEAVER-PLASMA_STITCH.title": "Plasma Stitch",
+  "WEAVER-PLASMA_STITCH.description": "Draw {Cards:diff()} cards.\n[gold]Align[/gold] [gold]Plasma[/gold].",
+  "WEAVER-SHADOW_WEFT.title": "Shadow Weft",
+  "WEAVER-SHADOW_WEFT.description": "Apply {DoomPower:diff()} [gold]Doom[/gold].\n[gold]Align[/gold] [gold]Dark[/gold].",
+  "WEAVER-SHATTERWEAVE.title": "Shatterweave",
+  "WEAVER-SHATTERWEAVE.description": "Gain {Block:diff()} [gold]Block[/gold].\n[gold]Align[/gold] [gold]Glass[/gold].",
+  "WEAVER-NEEDLE.title": "Needle",
+  "WEAVER-NEEDLE.description": "Deal {Damage:diff()} damage.",
+  "WEAVER-DOUBLE_WEAVE.title": "Double Weave",
+  "WEAVER-DOUBLE_WEAVE.description": "Gain [blue]1[/blue] [gold]Alignment[/gold] slot."
+}

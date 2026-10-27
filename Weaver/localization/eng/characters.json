@@ -1,0 +1,17 @@
+{
+  "WEAVER-WEAVER.title": "The Weaver",
+  "WEAVER-WEAVER.titleObject": "The Weaver",
+  "WEAVER-WEAVER.description": "A patient artisan who binds power into every motion.\nAligns with the elements and fuses techniques together.",
+  "WEAVER-WEAVER.pronounSubject": "they",
+  "WEAVER-WEAVER.pronounObject": "them",
+  "WEAVER-WEAVER.possessiveAdjective": "their",
+  "WEAVER-WEAVER.pronounPossessive": "theirs",
+  "WEAVER-WEAVER.goldMonologue": "More thread for the loom...",
+  "WEAVER-WEAVER.eventDeathPrevention": "The pattern is not finished!",
+  "WEAVER-WEAVER.aromaPrinciple": "[sine]Warp and weft...[/sine]",
+  "WEAVER-WEAVER.cardsModifierTitle": "Weaver Cards",
+  "WEAVER-WEAVER.cardsModifierDescription": "Weaver cards will now appear in rewards and shops.",
+  "WEAVER-WEAVER.banter.alive.endTurnPing": "Hold the pattern!",
+  "WEAVER-WEAVER.banter.dead.endTurnPing": "...",
+  "WEAVER-WEAVER.unlockText": "Play a single run with [pink]{Prerequisite}[/pink] to unlock this character."
+}
