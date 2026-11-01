@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="760" viewBox="0 0 1000 760">
+  <defs>
+    <radialGradient id="moon" cx="0.45" cy="0.4" r="0.6">
+      <stop offset="0" stop-color="#fff8e0"/><stop offset="1" stop-color="#d8c79a"/>
+    </radialGradient>
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="20" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <circle cx="560" cy="320" r="220" fill="url(#moon)" filter="url(#glow)" opacity="0.95"/>
+  <!-- branch -->
+  <path d="M0,600 C200,580 380,600 560,560 C700,530 820,560 1000,520" fill="none" stroke="#0e0608" stroke-width="30" stroke-linecap="round"/>
+  <path d="M700,540 C740,500 780,490 820,470 M300,590 C280,640 240,670 200,690" fill="none" stroke="#0e0608" stroke-width="14" stroke-linecap="round"/>
+  <!-- raven -->
+  <g fill="#0e0608">
+    <path d="M430,570 C410,520 400,450 430,390 C450,350 470,320 500,300 C495,270 510,235 545,225 C575,218 600,235 610,258 L680,262 L612,282 C615,320 610,360 600,400 C590,460 560,520 520,570 L500,575 L470,700 L455,700 L470,575 Z"/>
+    <path d="M440,420 C380,450 340,520 330,600 C370,560 410,520 450,500 Z"/>
+    <path d="M500,568 L510,600 M520,566 L535,598" stroke="#0e0608" stroke-width="8" stroke-linecap="round"/>
+  </g>
+  <circle cx="572" cy="252" r="9" fill="#b98cff" filter="url(#glow)"/>
+  <circle cx="572" cy="252" r="5" fill="#f1e6ff"/>
+  <!-- falling feather -->
+  <path d="M260,250 C240,300 250,360 280,400 C300,350 300,290 260,250 Z M262,255 L282,398" fill="#0e0608" stroke="#4b2a8a" stroke-width="3"/>
+</svg>

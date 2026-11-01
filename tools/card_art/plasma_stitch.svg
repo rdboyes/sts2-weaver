@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="760" viewBox="0 0 1000 760">
+  <defs>
+    <radialGradient id="plasma" cx="0.4" cy="0.38" r="0.65">
+      <stop offset="0" stop-color="#fff2fc"/><stop offset="0.35" stop-color="#ff8ce6"/><stop offset="0.8" stop-color="#a02c8a"/><stop offset="1" stop-color="#4a0d40"/>
+    </radialGradient>
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="22" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <circle cx="500" cy="380" r="230" fill="url(#plasma)" filter="url(#glow)"/>
+  <!-- seam with cross-stitches -->
+  <path d="M320,240 C430,330 450,450 400,580 M680,180 C560,300 560,450 640,590" fill="none" stroke="#5a1450" stroke-width="6" opacity="0.6"/>
+  <g stroke="#f1e6ff" stroke-width="10" stroke-linecap="round">
+    <path d="M345,250 l40,30 M385,250 l-40,30"/><path d="M395,320 l40,30 M435,320 l-40,30"/>
+    <path d="M420,400 l40,30 M460,400 l-40,30"/><path d="M410,480 l40,30 M450,480 l-40,30"/>
+    <path d="M630,220 l40,30 M670,220 l-40,30"/><path d="M590,300 l40,30 M630,300 l-40,30"/>
+    <path d="M570,380 l40,30 M610,380 l-40,30"/><path d="M580,460 l40,30 M620,460 l-40,30"/>
+  </g>
+  <!-- loose ends -->
+  <path d="M400,580 C380,640 320,660 290,700" fill="none" stroke="#f1e6ff" stroke-width="8" stroke-linecap="round"/>
+  <path d="M640,590 C680,640 740,640 780,690" fill="none" stroke="#f1e6ff" stroke-width="8" stroke-linecap="round"/>
+  <g fill="#ffd6f6" filter="url(#glow)"><circle cx="240" cy="200" r="10"/><circle cx="790" cy="300" r="12"/><circle cx="760" cy="520" r="7"/></g>
+</svg>

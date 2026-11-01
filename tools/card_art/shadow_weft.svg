@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="760" viewBox="0 0 1000 760">
+  <defs>
+    <radialGradient id="void" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#000"/><stop offset="0.7" stop-color="#1a0b2e"/><stop offset="1" stop-color="#6a3dbd"/>
+    </radialGradient>
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="16" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="smoke" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="6"/></filter>
+  </defs>
+  <!-- tendrils of dark thread -->
+  <g fill="none" stroke-linecap="round" filter="url(#glow)">
+    <path d="M500,380 C400,300 300,360 200,280 S80,160 40,120" stroke="#6a3dbd" stroke-width="14"/>
+    <path d="M500,380 C620,280 720,380 820,300 S940,160 980,140" stroke="#6a3dbd" stroke-width="14"/>
+    <path d="M500,380 C420,480 300,440 220,560 S120,700 80,740" stroke="#4b2a8a" stroke-width="12"/>
+    <path d="M500,380 C580,500 700,460 780,580 S880,700 940,740" stroke="#4b2a8a" stroke-width="12"/>
+    <path d="M500,380 C480,260 560,180 520,60" stroke="#8a5be0" stroke-width="8"/>
+  </g>
+  <circle cx="500" cy="380" r="170" fill="url(#void)" filter="url(#glow)"/>
+  <!-- eye -->
+  <path d="M400,380 Q500,300 600,380 Q500,460 400,380 Z" fill="#2a1048" stroke="#b98cff" stroke-width="5"/>
+  <ellipse cx="500" cy="380" rx="18" ry="44" fill="#d9b8ff" filter="url(#glow)"/>
+  <ellipse cx="500" cy="380" rx="7" ry="30" fill="#000"/>
+</svg>

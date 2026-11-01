@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="760" viewBox="0 0 1000 760">
+  <defs>
+    <radialGradient id="shell" cx="0.4" cy="0.3" r="0.8">
+      <stop offset="0" stop-color="#e6fbff"/><stop offset="0.45" stop-color="#7fc8e8"/><stop offset="1" stop-color="#1d4a6a"/>
+    </radialGradient>
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="12" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <!-- legs -->
+  <g stroke="#123047" stroke-width="16" stroke-linecap="round" fill="none">
+    <path d="M330,300 L230,240 L190,170"/><path d="M670,300 L770,240 L810,170"/>
+    <path d="M320,420 L200,430 L150,500"/><path d="M680,420 L800,430 L850,500"/>
+    <path d="M350,540 L270,620 L260,700"/><path d="M650,540 L730,620 L740,700"/>
+  </g>
+  <!-- head -->
+  <ellipse cx="500" cy="140" rx="90" ry="60" fill="#1d4a6a" stroke="#0b2233" stroke-width="8"/>
+  <path d="M450,100 C420,50 380,40 350,50 M550,100 C580,50 620,40 650,50" stroke="#0b2233" stroke-width="10" fill="none" stroke-linecap="round"/>
+  <!-- shell halves -->
+  <g filter="url(#glow)">
+    <path d="M495,170 C380,170 300,280 310,420 C320,560 420,650 495,660 Z" fill="url(#shell)" stroke="#0b2233" stroke-width="10"/>
+    <path d="M505,170 C620,170 700,280 690,420 C680,560 580,650 505,660 Z" fill="url(#shell)" stroke="#0b2233" stroke-width="10"/>
+  </g>
+  <!-- plate ridges -->
+  <g fill="none" stroke="#0b2233" stroke-width="6" opacity="0.6">
+    <path d="M330,330 C400,320 450,330 490,350"/><path d="M325,460 C400,450 450,460 490,480"/><path d="M360,580 C410,570 450,580 490,600"/>
+    <path d="M670,330 C600,320 550,330 510,350"/><path d="M675,460 C600,450 550,460 510,480"/><path d="M640,580 C590,570 550,580 510,600"/>
+  </g>
+  <!-- frost glints -->
+  <g stroke="#ffffff" stroke-width="5" stroke-linecap="round" filter="url(#glow)">
+    <path d="M400,250 l0,50 M375,275 l50,0 M382,257 l36,36 M418,257 l-36,36"/>
+    <path d="M610,400 l0,36 M592,418 l36,0"/>
+  </g>
+</svg>

@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="760" viewBox="0 0 1000 760">
+  <defs>
+    <linearGradient id="molten" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#fff2b0"/><stop offset="0.4" stop-color="#ffa030"/><stop offset="1" stop-color="#c0300c"/>
+    </linearGradient>
+    <linearGradient id="wood" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#3a1a08"/><stop offset="0.5" stop-color="#8a4a20"/><stop offset="1" stop-color="#3a1a08"/>
+    </linearGradient>
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="20" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <!-- heat haze -->
+  <g fill="none" stroke="#ffb347" stroke-width="6" opacity="0.5" stroke-linecap="round">
+    <path d="M380,110 C360,80 400,60 380,30"/><path d="M500,90 C480,60 520,40 500,10"/><path d="M620,110 C600,80 640,60 620,30"/>
+  </g>
+  <!-- top flange -->
+  <rect x="330" y="130" width="340" height="50" rx="14" fill="url(#wood)" stroke="#1a0a02" stroke-width="6"/>
+  <!-- melting thread body with drips -->
+  <path d="M370,180 L630,180 L630,470 C630,500 610,510 605,540 C600,600 585,640 570,640 C555,640 550,590 548,540 C546,515 530,510 520,540 C510,600 500,700 485,700 C470,700 465,620 460,560 C456,520 440,510 430,540 C420,580 410,610 398,610 C385,610 380,560 378,520 C376,490 370,480 370,460 Z" fill="url(#molten)" filter="url(#glow)"/>
+  <g stroke="#c0300c" stroke-width="5" opacity="0.6">
+    <path d="M370,230 L630,230 M370,280 L630,280 M370,330 L630,330 M370,380 L630,380 M370,430 L630,430"/>
+  </g>
+  <!-- slumped bottom flange -->
+  <path d="M300,500 C360,470 420,520 470,490 C540,450 600,520 700,480 L710,520 C620,560 540,500 480,540 C420,580 360,530 300,545 Z" fill="url(#wood)" stroke="#1a0a02" stroke-width="6"/>
+  <!-- pooled drops -->
+  <ellipse cx="485" cy="720" rx="60" ry="14" fill="#ff7a20" filter="url(#glow)"/>
+  <circle cx="570" cy="665" r="12" fill="#ffa030"/><circle cx="398" cy="635" r="10" fill="#ffa030"/>
+</svg>

@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="760" viewBox="0 0 1000 760">
+  <defs>
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="12" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <g fill="none" stroke="#9fe8ff" filter="url(#glow)">
+    <circle cx="500" cy="380" r="110" stroke-width="10" opacity="0.9"/>
+    <circle cx="500" cy="380" r="200" stroke-width="7" opacity="0.6"/>
+    <circle cx="500" cy="380" r="290" stroke-width="4" opacity="0.35"/>
+  </g>
+  <g filter="url(#glow)">
+    <path d="M500,250 L530,350 L630,380 L530,410 L500,510 L470,410 L370,380 L470,350 Z" fill="#e8fbff"/>
+    <path d="M520,300 L470,395 L510,395 L480,470 L560,365 L515,365 L545,300 Z" fill="#9fe8ff" stroke="#fff" stroke-width="4"/>
+  </g>
+  <g fill="#e8fbff">
+    <circle cx="690" cy="230" r="8"/><circle cx="300" cy="540" r="6"/><circle cx="330" cy="220" r="5"/><circle cx="710" cy="540" r="7"/>
+  </g>
+</svg>

@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="760" viewBox="0 0 1000 760">
+  <defs>
+    <linearGradient id="steel" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#5d6a7a"/><stop offset="0.45" stop-color="#ffffff"/><stop offset="1" stop-color="#6f7c8c"/>
+    </linearGradient>
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="12" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <!-- ground and cracks -->
+  <path d="M0,600 L1000,600 L1000,760 L0,760 Z" fill="#1a0609" opacity="0.8"/>
+  <g fill="none" stroke="#ff9a6a" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" filter="url(#glow)">
+    <path d="M500,600 L420,650 L380,640 L300,700"/><path d="M500,600 L590,660 L640,650 L740,720"/>
+    <path d="M500,600 L500,690 L470,760"/><path d="M500,600 L360,610 L250,600"/><path d="M500,600 L650,612 L780,598"/>
+  </g>
+  <!-- impact ring -->
+  <ellipse cx="500" cy="600" rx="260" ry="40" fill="none" stroke="#ffd27a" stroke-width="8" opacity="0.6" filter="url(#glow)"/>
+  <!-- speed lines -->
+  <g stroke="#fff" stroke-width="6" stroke-linecap="round" opacity="0.5">
+    <path d="M380,40 L380,260"/><path d="M620,20 L620,300"/><path d="M330,120 L330,360"/><path d="M670,90 L670,330"/>
+  </g>
+  <!-- huge needle driven into the ground -->
+  <path d="M440,0 L560,0 L548,480 L500,620 L452,480 Z" fill="url(#steel)" stroke="#2b3440" stroke-width="6"/>
+  <rect x="482" y="0" width="36" height="140" rx="18" fill="#2a0a12"/>
+  <path d="M500,140 C580,150 640,90 700,0" fill="none" stroke="#b98cff" stroke-width="16" stroke-linecap="round"/>
+  <!-- debris -->
+  <g fill="#3a1218" stroke="#ff9a6a" stroke-width="3">
+    <path d="M300,540 l30,-20 l14,26 Z"/><path d="M700,530 l26,-30 l18,24 Z"/><path d="M380,500 l18,-14 l10,20 Z"/><path d="M640,490 l20,-10 l6,22 Z"/>
+  </g>
+</svg>

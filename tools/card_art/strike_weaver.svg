@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="760" viewBox="0 0 1000 760">
+  <defs>
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="10" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <linearGradient id="steel" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffffff"/><stop offset="0.5" stop-color="#c9d3df"/><stop offset="1" stop-color="#6f7c8c"/>
+    </linearGradient>
+  </defs>
+  <!-- slash streaks -->
+  <g fill="#fff" opacity="0.85" filter="url(#glow)">
+    <path d="M150,560 Q500,330 880,170 Q520,370 170,585 Z"/>
+    <path d="M230,650 Q560,450 900,300 Q580,480 250,670 Z" opacity="0.6"/>
+    <path d="M110,450 Q420,270 760,120 Q450,300 125,470 Z" opacity="0.5"/>
+  </g>
+  <!-- trailing thread -->
+  <path d="M300,520 C200,600 120,470 60,560 S-20,700 40,740" fill="none" stroke="#b98cff" stroke-width="9" stroke-linecap="round" filter="url(#glow)"/>
+  <!-- needle -->
+  <g transform="translate(540,360) rotate(-33)">
+    <path d="M-300,-16 L240,-10 L330,0 L240,10 L-300,16 A16,16 0 0 1 -300,-16 Z" fill="url(#steel)" stroke="#2b3440" stroke-width="4"/>
+    <ellipse cx="-262" cy="0" rx="34" ry="6" fill="#2a0a12"/>
+    <path d="M-262,0 C-300,40 -330,90 -330,120" fill="none" stroke="#b98cff" stroke-width="9" stroke-linecap="round"/>
+  </g>
+  <circle cx="815" cy="182" r="10" fill="#fff" filter="url(#glow)"/>
+</svg>

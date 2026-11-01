@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="760" viewBox="0 0 1000 760">
+  <defs>
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="12" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <clipPath id="topHalf"><rect x="0" y="0" width="1000" height="380"/></clipPath>
+  </defs>
+  <!-- two interlocking thread rings: the gold one passes under the purple one at the bottom, over it at the top -->
+  <g fill="none" stroke-width="44" filter="url(#glow)">
+    <circle cx="390" cy="380" r="190" stroke="#b98cff"/>
+    <circle cx="610" cy="380" r="190" stroke="#ffd27a"/>
+  </g>
+  <circle cx="390" cy="380" r="190" fill="none" stroke="#b98cff" stroke-width="44" clip-path="url(#topHalf)"/>
+  <g fill="none" stroke-width="6" opacity="0.45" stroke-dasharray="14 18">
+    <circle cx="390" cy="380" r="190" stroke="#3b2066"/>
+    <circle cx="610" cy="380" r="190" stroke="#6b4a10"/>
+  </g>
+  <g fill="#fff" filter="url(#glow)"><circle cx="500" cy="230" r="10"/><circle cx="500" cy="530" r="10"/></g>
+</svg>
