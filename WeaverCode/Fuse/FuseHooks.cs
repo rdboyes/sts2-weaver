@@ -8,11 +8,12 @@ namespace Weaver.WeaverCode.Fuse;
 /// <summary>Always-on combat listener that drives Fuse.</summary>
 public sealed class FuseHooks() : CustomSingletonModel(HookType.Combat)
 {
-    public override (PileType, CardPilePosition) ModifyCardPlayResultPileTypeAndPosition(CardModel card,
-        bool isAutoPlay, ResourceInfo resources, PileType pileType, CardPilePosition position)
+    public override CardLocation ModifyCardPlayResultLocation(CardModel card, bool isAutoPlay,
+        ResourceInfo resources, CardLocation cardLocation)
     {
-        if (pileType != PileType.None && FuseCmd.HasFuse(card)) return (PileType.Exhaust, position);
-        return (pileType, position);
+        if (cardLocation.pileType != PileType.None && FuseCmd.HasFuse(card))
+            return cardLocation with { pileType = PileType.Exhaust };
+        return cardLocation;
     }
 
     public override async Task AfterCardPlayed(PlayerChoiceContext choiceContext, CardPlay cardPlay)

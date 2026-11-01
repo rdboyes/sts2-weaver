@@ -21,7 +21,7 @@ public sealed class LightningAlignment : AlignmentPower
     public override void AddFusedBonus(FusedEffects effects) => effects.Add(FuseStat.Damage, Amount);
 
     public override decimal ModifyDamageAdditive(Creature? target, decimal amount, ValueProp props, Creature? dealer,
-        CardModel? cardSource)
+        CardModel? cardSource, CardPlay? cardPlay)
     {
         if (!IsAlignedCard(cardSource) || !MergesInto(cardSource!) || !props.IsPoweredAttack()) return 0m;
         return Amount;

@@ -109,6 +109,7 @@ public static class FuseCmd
             await InvokeOnPlay(payload, choiceContext, new CardPlay
             {
                 Card = payload,
+                Player = hostPlay.Player,
                 Target = payloadTarget,
                 ResultPile = hostPlay.ResultPile,
                 Resources = hostPlay.Resources,
